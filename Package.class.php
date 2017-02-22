@@ -6,6 +6,9 @@ use App\System\FileSystem;
 
 require_once "Line.class.php";
 
+// TODO : fix if module not exists or something like that
+
+
 class Package{
 
     /**
@@ -58,17 +61,20 @@ class Package{
                 
                 Line::gray(str_repeat("-", 60) . "\n");
                 Line::gray("Fetching " . $zip . "\n");
+                $downloaded = true;
                 Request::fetch($zip, $saveTo, function ($current, $total) use($zip) {
                     $percent = $total == 0 ? 0 : round($current / $total * 100);
                     Line::clear();
                     Line::blue("Receiving objects: {$percent}% (". FileSystem::format($current). "/" . FileSystem::format($total) . ") done ...");
-                }, function ($e) use (&$errors, $zip) {
+                }, function ($e) use (&$errors, $zip, &$downloaded) {
+                    Line::br();
                     Line::red("HTTP Error $e on $zip.");
                     array_push($errors, "HTTP Error {$e} on {$zip}.");
+                    $downloaded = false;
                 });
-                Line::br();
 
-                if (file_exists($saveTo)) {
+                if (file_exists($saveTo) && $downloaded) {
+                    Line::br();
                     $extractTo = $module_path . ($folder == "_empty_" ? "" : "/" . $folder);
 
                     FileSystem::mkdirRecursive($extractTo);
@@ -92,7 +98,7 @@ class Package{
         Line::gray(str_repeat("*", 60) . "\n");
         Line::br(2);
         if (sizeof($errors)) {
-            Line::red("complete with errors:");
+            Line::red("Complete with Errors:");
             Line::br(2);
             foreach ($errors as $err) {
                 Line::red("\t" . $err);
