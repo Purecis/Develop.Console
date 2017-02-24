@@ -14,7 +14,7 @@ class Std extends Controller{
        ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝";
     
     public static function header(){
-        self::br(50);
+        // self::br(50);
         $version = new Scope('config.version');
         
         self::gray(self::$brand);

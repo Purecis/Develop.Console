@@ -8,6 +8,7 @@ use \App\System\FileSystem;
 
 use App\Develop\Console\Controller\Std;
 use App\Develop\Console\Controller\Package;
+use App\Develop\Console\Controller\CLI;
 
 class Console extends Injectable{
     
@@ -58,7 +59,7 @@ class Console extends Injectable{
     }
 
     static function installCLI(){
-        echo "install CLI Function called";
+        CLI::install();
     }
 }
 
