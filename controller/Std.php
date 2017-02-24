@@ -1,8 +1,10 @@
 <?php
-namespace App\Develop;
+namespace App\Develop\Console\Controller;
+
+use App\System\Controller;
 use \App\System\Scope;
 
-class Line{
+class Std extends Controller{
     public static $brand = "
        ██████╗ ██████╗ ██████╗ ███████╗██╗  ██╗██╗██╗   ██╗███████╗
       ██╔════╝██╔═══██╗██╔══██╗██╔════╝██║  ██║██║██║   ██║██╔════╝
@@ -12,13 +14,14 @@ class Line{
        ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝";
     
     public static function header(){
-        Line::br(50);
+        self::br(50);
         $version = new Scope('config.version');
         
-        Line::gray(self::$brand);
-        Line::br(2);
-        Line::green("\tCodeHive Framework v" . $version->major . "." . $version->minor . " [" . $version->patch . "] " . $version->code);
-        Line::br(3);
+        self::gray(self::$brand);
+        self::br(2);
+        self::green("\tCodeHive Framework v" . $version->major . "." . $version->minor . " [" . $version->patch . "] " . $version->code);
+        self::br(3);
+        // for($i=0; $i<100; $i++)echo "\033[{$i}m" . $i . "\033[0m";
     }
     
     public static function output($txt){
@@ -44,9 +47,25 @@ class Line{
     public static function blink($txt){
         return print "\e[5m" . $txt . "\033[0m";
     }
+    
+    public static function light($txt){
+        return print "\e[47m" . $txt . "\033[0m";
+    }
+    
+    public static function highlight($txt){
+        return print "\e[7m" . $txt . "\033[0m";
+    }
+    
+    public static function bold($txt){
+        return print "\e[1m" . $txt . "\033[0m";
+    }
 
     public static function br($times = 1){
         return print str_repeat("\n", $times);
+    }
+
+    public static function space($times = 1){
+        return print str_repeat(" ", $times);
     }
 
     public static function clear(){

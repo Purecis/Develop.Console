@@ -5,16 +5,15 @@ namespace App\Develop;
 use \App\System\Injectable;
 use \App\System\Request;
 use \App\System\FileSystem;
-use \App\System\Loader;
 
-require_once "Line.class.php";
-require_once "Package.class.php";
+use App\Develop\Console\Controller\Std;
+use App\Develop\Console\Controller\Package;
 
 class Console extends Injectable{
-
-
+    
     function __bootstrap(){
-        Line::header();
+        
+        Std::header();
         
         if($_SERVER['argv'][0] == 'install'){
             self::install();
@@ -28,7 +27,7 @@ class Console extends Injectable{
         }
         Request::fetch("https://github.com/Purecis/codeHive/archive/v3.0.zip", "assets/download/3MB.zip", function ($current, $total) {
             $percent = $total == 0 ? 0 : round($current / $total * 100);
-            echo "\rReceiving objects: {$percent}% (". FileSystem::format($current). "/" . FileSystem::format($total) . ") done ...";
+            echo "\rReceiving objects: {$percent}% (". FileSystem::format($current). "/" . FileSystem::format($total) . ") done ..." . str_repeat(" ", 10);
         }, function ($e) use (&$errors, $zip) {
             echo "HTTP Error $e on $zip.";
             array_push($errors, "HTTP Error {$e} on {$zip}.");
@@ -45,8 +44,8 @@ class Console extends Injectable{
 
     static function install(){
         $package = $_SERVER['argv'][1];
-        $force = $_SERVER['argv'][2] == "--force";
-        Package::install($package, $force);
+        $force = $_SERVER['argv'][2];
+        Package::install($package, $force, true);
     }
 
 
