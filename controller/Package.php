@@ -29,7 +29,7 @@ class Package extends Controller{
         if(isset(self::$packageList[$container][$module])){
             return;
         }
-        self::$packageList[$container][$module] = [];
+        self::$packageList[$container][$module] = ['status' => true];
 
         ini_set("memory_limit","200M");
 
@@ -73,6 +73,9 @@ class Package extends Controller{
         
         if (file_exists($module_path)) {
             if ($force != "--force" && $force != "--force-all") {
+                array_push($errors, "Folder Already Exists. ");
+                self::$packageList[$container][$module]['status'] = false;
+                self::$packageList[$container][$module]['errors'] = $errors;
                 Std::output("Already Exists. ");
                 if($mainThread){
                     Std::output("you can try ");
