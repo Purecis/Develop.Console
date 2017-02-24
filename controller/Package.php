@@ -103,7 +103,9 @@ class Package extends Controller{
             
             foreach ($json->source->file as $file => $folder) {
                 Std::blue("Fetching : " . $file);
-                $saveTo = $module_path . "/" . basename($file);
+                $saveToFolder = $module_path . ($folder == "_empty_" ? "" : "/" . $folder);
+                $saveTo = $saveToFolder . "/" . basename($file);
+                FileSystem::mkdirRecursive($saveToFolder);
                 
                 $downloaded = true;
                 Request::fetch($file, $saveTo, function ($current, $total) use($file) {
@@ -187,7 +189,7 @@ class Package extends Controller{
         
         // drow the tree
         if($mainThread){
-            Std::br(2);
+            // Std::br(2);
             Std::output(".");
             Std::br();
             $count = [0,0];
