@@ -63,8 +63,8 @@ class CLI extends Controller{
         if($line != "y" and $line != ""){
             $default = $line;
         }
-        Std::clear();
-        Std::clear();
+        Std::clearLine();
+        Std::clearLine();
         Std::green("{$OK} ({$default})");
         Std::br();
         Std::gray(str_repeat("-", 60));

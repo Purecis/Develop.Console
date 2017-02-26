@@ -16,7 +16,7 @@ class Std extends Controller{
     public static function header(){
         // self::br(50);
         $version = new Scope('config.version');
-        
+        self::clear();
         self::gray(self::$brand);
         self::br(2);
         self::green("\tCodeHive Framework v" . $version->major . "." . $version->minor . " [" . $version->patch . "] " . $version->code);
@@ -68,7 +68,40 @@ class Std extends Controller{
         return print str_repeat(" ", $times);
     }
 
-    public static function clear(){
+    public static function tab($times = 1){
+        return print str_repeat("\t", $times);
+    }
+
+    public static function clearLine(){
         return print "\r";
     }
+
+    public static function clear(){
+        return print "\033c";
+    }
+
+    public static function listing($list){
+        $prefix = 2;
+        $tabSize = 8;
+        $tabs = 4;
+        foreach($list as $title => $commands){
+            Std::br();
+            Std::green($title);
+            Std::br();
+            foreach($commands as $command => $description){
+                if(is_numeric($command)){
+                    Std::space($prefix);
+
+                }else{
+                    Std::space($prefix);
+                    Std::green($command);
+                    Std::tab($tabs - intval((strlen($command) + $prefix) / $tabSize));
+                }
+                $description = preg_replace('/\s\s+|\n+/m', " ", $description);
+                Std::output($description);
+                Std::br();
+            }
+        }
+    }
+
 }

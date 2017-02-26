@@ -9,45 +9,52 @@ use \App\System\FileSystem;
 use App\Develop\Console\Controller\Std;
 use App\Develop\Console\Controller\Package;
 use App\Develop\Console\Controller\CLI;
+use App\Develop\Console\Controller\Help;
+use App\Develop\Console\Controller\Cmd;
 
 class Console extends Injectable{
     
     function __bootstrap(){
         
         Std::header();
-        
-        if($_SERVER['argv'][0] == 'install'){
-            self::install();
-        };
-        return;
-        
-        echo "hello console";
 
-        if (!file_exists("assets/download")) {
-            mkdir("assets/download", 0755, true);
+        switch (Cmd::argv(0)) {
+            case 'new':
+                Help::_new();
+                break;
+            
+            case 'install':
+                self::install();
+                break;
+            
+            default:
+                Help::_usage();
+                break;
         }
-        Request::fetch("https://github.com/Purecis/codeHive/archive/v3.0.zip", "assets/download/3MB.zip", function ($current, $total) {
-            $percent = $total == 0 ? 0 : round($current / $total * 100);
-            echo "\rReceiving objects: {$percent}% (". FileSystem::format($current). "/" . FileSystem::format($total) . ") done ..." . str_repeat(" ", 10);
-        }, function ($e) use (&$errors, $zip) {
-            echo "HTTP Error $e on $zip.";
-            array_push($errors, "HTTP Error {$e} on {$zip}.");
-        });
-
-        // \App\System\Request::fetch("http://ipv4.download.thinkbroadband.com/5MB.zip", "5MB.zip", function($current, $total){
-        //     echo "{$current} / {$total}<br>";
-        // });
-
-        if(!$this->isGitInstalled()){
-            echo "you should install git before you can use console.";
-        };
     }
 
     static function install(){
-        $package = $_SERVER['argv'][1];
-        $force = $_SERVER['argv'][2];
-        Package::install($package, $force, true);
+        $package = Cmd::argv(1);
+        if(!$package){
+            // if no package then search for hive.json installer file
+            Help::_install(); // just a demo test
+            return;
+        }
+
+        $force = false;
+        $global = false;
+        
+        Cmd::onOption('-f', '--force') && $force = "force";
+        Cmd::onOption('-F', '--force-all') && $force = "force-all";
+        Cmd::onOption('-g', '--global') && $global = true;
+        
+        Package::install($package, $force, $global, true);
+
+        
     }
+
+
+
 
 
     function isGitInstalled(){
@@ -58,15 +65,10 @@ class Console extends Injectable{
         return strncmp($code, $run, $len) === 0;
     }
 
-    static function installCLI(){
+
+    public static function installCLI(){
         CLI::install();
     }
+
+
 }
-
-
-/*
-
-#!/bin/sh
-/usr/bin/php /Volumes/SSD/www/framework/codeHive-v3.0/index.php _cli $@
-
-*/

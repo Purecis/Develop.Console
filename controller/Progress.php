@@ -40,7 +40,7 @@ class Progress extends Controller{
         $perc=(double)($done/$total);
         $bar=floor($perc*$size);
 
-        Std::clear();
+        Std::clearLine();
 
         // generate bar
         $status_bar  = self::$progressbar[0];
@@ -106,7 +106,7 @@ class Progress extends Controller{
 
     public static function line($current, $total){
         $percent = $total == 0 ? 0 : round($current / $total * 100);
-        Std::clear();
+        Std::clearLine();
         Std::blue("Receiving objects: {$percent}% (". FileSystem::format($current). "/" . FileSystem::format($total) . ") done ...");
     }
 }

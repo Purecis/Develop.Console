@@ -20,7 +20,7 @@ class Package extends Controller{
      *
      * @param  string    $module
      */
-    public static function install($package, $force = false, $mainThread = true)
+    public static function install($package, $force = false, $global = false, $mainThread = true)
     {
         list($container, $module) = explode(".", $package);
 
@@ -55,7 +55,7 @@ class Package extends Controller{
         // check for dependencies
         if(isset($json->dependancies)){
             foreach($json->dependancies as $dep){
-                self::install($dep, $force == "--force-all"?"--force-all":false, false);
+                self::install($dep, $force == "force-all"?"force-all":false, $global, false);
             }
         }
         
@@ -72,7 +72,7 @@ class Package extends Controller{
         self::$packageList[$container][$module]['path'] = $module_path;
         
         if (file_exists($module_path)) {
-            if ($force != "--force" && $force != "--force-all") {
+            if ($force != "force" && $force != "force-all") {
                 array_push($errors, "Folder Already Exists. ");
                 self::$packageList[$container][$module]['status'] = false;
                 self::$packageList[$container][$module]['errors'] = $errors;
@@ -113,15 +113,15 @@ class Package extends Controller{
                     Progress::percantage($current, $total);
                     
                 }, function ($e) use (&$errors, $file, &$downloaded) {
-                    Std::clear();
+                    Std::clearLine();
                     Std::red("HTTP Error $e on $file.");
                     array_push($errors, "HTTP Error {$e} on {$file}.");
                     $downloaded = false;
                 });
                 if($downloaded){
-                    Std::clear();
+                    Std::clearLine();
                     Std::space(70);
-                    Std::clear();
+                    Std::clearLine();
                     Std::green(basename($file) . " Completed");
                 }
                 Std::br();
@@ -146,7 +146,7 @@ class Package extends Controller{
                     Progress::percantage($current, $total);
                     
                 }, function ($e) use (&$errors, $zip, &$downloaded) {
-                    Std::clear();
+                    Std::clearLine();
                     Std::red("HTTP Error $e on $zip.");
                     array_push($errors, "HTTP Error {$e} on {$zip}.");
                     $downloaded = false;
@@ -156,15 +156,15 @@ class Package extends Controller{
                     $extractTo = $module_path . ($folder == "_empty_" ? "" : "/" . $folder);
 
                     FileSystem::mkdirRecursive($extractTo);
-                    Std::clear();
+                    Std::clearLine();
                     Std::green("Extracting ...");
                     Std::space(70);
                     if(FileSystem::unzip($saveTo, $extractTo)){
                         unlink($saveTo);
-                        Std::clear();
+                        Std::clearLine();
                         Std::green(basename($zip) . " Completed");
                     }else{
-                        Std::clear();
+                        Std::clearLine();
                         Std::red("Can't open zip file, try to extract it manually on {$saveTo}.");
                         array_push($errors, "Can't open zip file, try to extract it manually on {$saveTo}.");
                     }
