@@ -44,6 +44,7 @@ class Help extends Controller{
                 '-s, --save'        => 'Save package to hive.json in main project',
                 '-g, --global'      => 'run command to _global folder',
                 '-h, --help'        => 'Display this help message',
+                '-p, --port'        => 'Port to use for httpd server',
                 '-f, --force'       => 'Force command',
                 '-F, --force-all'   => 'Force command and his all childs and dependencies',
                 '-V, --version'     => 'Display this application version'

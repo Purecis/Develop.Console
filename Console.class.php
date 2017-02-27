@@ -1,16 +1,16 @@
 <?php
 
-
 namespace App\Develop;
+
 use \App\System\Injectable;
 use \App\System\Request;
 use \App\System\FileSystem;
 
 use App\Develop\Console\Controller\Std;
-use App\Develop\Console\Controller\Package;
 use App\Develop\Console\Controller\CLI;
-use App\Develop\Console\Controller\Help;
 use App\Develop\Console\Controller\Cmd;
+use App\Develop\Console\Controller\Sys;
+use App\Develop\Console\Controller\Help;
 
 class Console extends Injectable{
     
@@ -23,8 +23,12 @@ class Console extends Injectable{
                 Help::_new();
                 break;
             
+            case 'serv':
+                Sys::_serv();
+                break;
+            
             case 'install':
-                self::install();
+                Sys::_install();
                 break;
             
             default:
@@ -32,30 +36,6 @@ class Console extends Injectable{
                 break;
         }
     }
-
-    static function install(){
-        $package = Cmd::argv(1);
-        if(!$package){
-            // if no package then search for hive.json installer file
-            Help::_install(); // just a demo test
-            return;
-        }
-
-        $force = false;
-        $global = false;
-        
-        Cmd::onOption('-f', '--force') && $force = "force";
-        Cmd::onOption('-F', '--force-all') && $force = "force-all";
-        Cmd::onOption('-g', '--global') && $global = true;
-        
-        Package::install($package, $force, $global, true);
-
-        
-    }
-
-
-
-
 
     function isGitInstalled(){
         $code = "git version";

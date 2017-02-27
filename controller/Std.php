@@ -19,7 +19,7 @@ class Std extends Controller{
         self::clear();
         self::gray(self::$brand);
         self::br(2);
-        self::green("\tCodeHive Framework v" . $version->major . "." . $version->minor . " [" . $version->patch . "] " . $version->code);
+        self::green("  CodeHive Framework v" . $version->major . "." . $version->minor . " [" . $version->patch . "] " . $version->code);
         self::br(3);
         // for($i=0; $i<100; $i++)echo "\033[{$i}m" . $i . "\033[0m";
     }
