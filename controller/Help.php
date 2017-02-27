@@ -13,6 +13,7 @@ class Help extends Controller{
                 'about'             => 'Short information about codeHive',
                 'help'              => 'Displays help for a command',
                 'configure'         => 'Fix all path and rewrite module in .htaccess file',
+                'serv'              => 'start httpd server on port',
                 'self-update'       => 'Updates codeHive to the latest version',
                 'working-dir'       => 'Display codeHive working directory',
                 'version'           => 'Display codeHive version',
