@@ -2,7 +2,7 @@
 
 namespace App\Develop;
 
-use \App\System\Injectable;
+use \App\System\Module;
 use \App\System\Request;
 use \App\System\FileSystem;
 
@@ -12,7 +12,7 @@ use App\Develop\Console\Controller\Cmd;
 use App\Develop\Console\Controller\Sys;
 use App\Develop\Console\Controller\Help;
 
-class Console extends Injectable{
+class Console extends Module{
     
     function __bootstrap(){
         
