@@ -33,6 +33,7 @@ class Help extends Controller{
                 'list'              => 'Lists available packages in a container',
                 'search'            => 'Search for packages',
                 'install'           => 'Installs from package name if present, or falls back on the project dependencies to hive.json.',
+                'group-install'     => 'Install group of packages',
                 'update'            => 'Updates your dependencies to the latest version according to hive.json.',
                 'remove'            => 'Removes a package from system and hive.json.',
                 'info'              => 'Show information about packages',
