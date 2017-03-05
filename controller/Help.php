@@ -2,8 +2,10 @@
 namespace App\Develop\Console\Controller;
 
 use App\System\Controller;
+use App\System\Request;
 
 class Help extends Controller{
+    
     public static function _usage(){
         $usage = [
             "Usage:" => [
@@ -45,6 +47,7 @@ class Help extends Controller{
                 '-g, --global'      => 'run command to _global folder',
                 '-h, --help'        => 'Display this help message',
                 '-p, --port'        => 'Port to use for httpd server',
+                '-m, --method'      => 'creator method (DI, IOC)',
                 '-f, --force'       => 'Force command',
                 '-F, --force-all'   => 'Force command and his all childs and dependencies',
                 '-V, --version'     => 'Display this application version'
