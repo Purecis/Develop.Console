@@ -6,8 +6,6 @@ use App\System\Scope;
 use App\System\Request;
 use App\System\FileSystem;
 
-// TODO : fix if module not exists or something like that
-
 class Package extends Controller{
 
 
@@ -68,7 +66,11 @@ class Package extends Controller{
             Std::br();
         }
 
-        $module_path = $hive->app_path . "/module/" . $container . "/" . $module;
+        // check for global in fetched json
+        if($json->global == true){
+            $global = true;
+        }
+        $module_path = ($global == true ? $hive->glob_path : $hive->app_path) . "/module/" . $container . "/" . $module;
         self::$packageList[$container][$module]['path'] = $module_path;
         
         if (file_exists($module_path)) {
